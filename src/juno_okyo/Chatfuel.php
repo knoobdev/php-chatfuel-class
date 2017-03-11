@@ -39,14 +39,18 @@ class Chatfuel
     }
 
     $type = gettype($messages);
-    if ($type === 'string') {
-      $this->response[] = array('text' => $messages);
-    } elseif ($type === 'array' || is_array($messages)) {
-      foreach ($messages as $message) {
-        $this->response[] = array('text' => $message);
-      }
-    } else {
-      $this->response[] = array('text' => 'Error!');
+    switch($type) {
+      case 'string':
+         $this->response[] = array('text' => $messages);
+        break;
+      case 'array':
+        foreach ($messages as $key => $message) {
+          $this->response[] = array('text' => $message);
+          unset($messages[$key]);
+        }
+        break;
+      default:
+        $this->response[] = array('text' => 'Error!');
     }
   }
 
